@@ -1,0 +1,7 @@
+{
+  "name": "The Ghost Link",
+  "description": "An interactive web application for exploring and investigating haunted locations, crime scenes, and unsolved mysteries with an AI historian.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
