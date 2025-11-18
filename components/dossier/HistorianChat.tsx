@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+
+import * as React from 'react';
 import type { ChatMessage, LocationFull } from '../../types';
 import Modal from '../ui/Modal';
-import { askLocationHistorian } from '../../services/geminiService';
+import { askHistorian } from '../../services/geminiService';
 import Spinner from '../ui/Spinner';
 import { SendIcon, UserIcon } from '../ui/Icons';
 import { GhostIcon } from '../ui/Icons';
@@ -13,10 +14,10 @@ interface HistorianChatProps {
 }
 
 const HistorianChat: React.FC<HistorianChatProps> = ({ isOpen, onClose, location }) => {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [messages, setMessages] = React.useState<ChatMessage[]>([]);
+  const [input, setInput] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
   const locationContext = `
     Location Name: ${location.name}
@@ -28,20 +29,7 @@ const HistorianChat: React.FC<HistorianChatProps> = ({ isOpen, onClose, location
     Social History: ${location.dossier.socialHistory}
   `;
 
-  useEffect(() => {
-    // When the modal is opened, reset the chat with a welcome message
-    if (isOpen) {
-      setMessages([
-        {
-          role: 'model',
-          text: `Hello! I am the AI Historian for ${location.name}. I have reviewed the dossier. What historical details can I provide for you?`,
-        }
-      ]);
-      setInput(''); // Also clear any lingering input
-    }
-  }, [isOpen, location.id]); // Rerun when modal opens or location changes
-
-  useEffect(() => {
+  React.useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
   
@@ -53,7 +41,7 @@ const HistorianChat: React.FC<HistorianChatProps> = ({ isOpen, onClose, location
     setInput('');
     setIsLoading(true);
 
-    const responseText = await askLocationHistorian(input, locationContext);
+    const responseText = await askHistorian(input, locationContext);
     
     const modelMessage: ChatMessage = { role: 'model', text: responseText };
     setMessages(prev => [...prev, modelMessage]);

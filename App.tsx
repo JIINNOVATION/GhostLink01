@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+
+import * as React from 'react';
 import type { LatLngExpression } from 'leaflet';
 import Header from './components/layout/Header';
 import MapController from './components/map/MapController';
@@ -8,37 +9,35 @@ import { locationService } from './services/locationService';
 import type { LocationPin } from './types';
 import { LocationCategory } from './types';
 import { useGeolocation } from './hooks/useGeolocation';
-import MainHistorianChat from './components/ai/MainHistorianChat';
 
 const App: React.FC = () => {
-  const [pins, setPins] = useState<LocationPin[]>([]);
-  const [filteredPins, setFilteredPins] = useState<LocationPin[]>([]);
-  const [selectedLocationId, setSelectedLocationId] = useState<number | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isMainHistorianOpen, setIsMainHistorianOpen] = useState(false);
+  const [pins, setPins] = React.useState<LocationPin[]>([]);
+  const [filteredPins, setFilteredPins] = React.useState<LocationPin[]>([]);
+  const [selectedLocationId, setSelectedLocationId] = React.useState<number | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   
   const { position: userPosition, locate, loading: isLocating } = useGeolocation();
-  const [mapCenter, setMapCenter] = useState<LatLngExpression | null>(null);
+  const [mapCenter, setMapCenter] = React.useState<LatLngExpression | null>(null);
 
-  const [filters, setFilters] = useState<Record<LocationCategory, boolean>>({
+  const [filters, setFilters] = React.useState<Record<LocationCategory, boolean>>({
     [LocationCategory.HAUNTED]: true,
     [LocationCategory.CRIME]: true,
     [LocationCategory.MYSTERY]: true,
     [LocationCategory.USER]: true,
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     locationService.fetchLocationPins().then(setPins);
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const activeCategories = Object.entries(filters)
       .filter(([, isActive]) => isActive)
       .map(([category]) => category);
     setFilteredPins(pins.filter(pin => activeCategories.includes(pin.category)));
   }, [pins, filters]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (userPosition) {
       setMapCenter(userPosition);
     }
@@ -49,11 +48,11 @@ const App: React.FC = () => {
     setFilters(prev => ({ ...prev, [category]: isChecked }));
   };
   
-  const handleMarkerClick = useCallback((id: number) => {
+  const handleMarkerClick = React.useCallback((id: number) => {
     setSelectedLocationId(id);
   }, []);
 
-  const handleDossierClose = useCallback(() => {
+  const handleDossierClose = React.useCallback(() => {
     setSelectedLocationId(null);
   }, []);
 
@@ -63,11 +62,7 @@ const App: React.FC = () => {
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black">
-      <Header 
-        isLoggedIn={isLoggedIn} 
-        onLoginToggle={handleLoginToggle}
-        onOpenMainHistorian={() => setIsMainHistorianOpen(true)}
-      />
+      <Header isLoggedIn={isLoggedIn} onLoginToggle={handleLoginToggle} />
       <main className="h-full w-full">
         <MapController 
           locations={filteredPins} 
@@ -85,10 +80,6 @@ const App: React.FC = () => {
         locationId={selectedLocationId} 
         onClose={handleDossierClose}
         isLoggedIn={isLoggedIn}
-      />
-      <MainHistorianChat
-        isOpen={isMainHistorianOpen}
-        onClose={() => setIsMainHistorianOpen(false)}
       />
     </div>
   );

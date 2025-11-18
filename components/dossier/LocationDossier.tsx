@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+
+import * as React from 'react';
 import type { LocationFull } from '../../types';
 import { locationService } from '../../services/locationService';
 import Spinner from '../ui/Spinner';
 import { CloseIcon, GhostIcon, CrimeIcon, MysteryIcon, UserIcon } from '../ui/Icons';
 import HistorianChat from './HistorianChat';
 import { LocationCategory } from '../../types';
-import MediaGalleryModal from './MediaGalleryModal';
 
 interface LocationDossierProps {
   locationId: number | null;
@@ -23,14 +23,12 @@ const categoryDetails = {
 type Tab = 'spirit' | 'crime' | 'history';
 
 const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, isLoggedIn }) => {
-  const [location, setLocation] = useState<LocationFull | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<Tab>('spirit');
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
-  const [selectedMediaIndex, setSelectedMediaIndex] = useState(0);
+  const [location, setLocation] = React.useState<LocationFull | null>(null);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [activeTab, setActiveTab] = React.useState<Tab>('spirit');
+  const [isChatOpen, setIsChatOpen] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (locationId === null) {
       setLocation(null);
       return;
@@ -48,15 +46,6 @@ const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, 
 
     fetchDetails();
   }, [locationId]);
-
-  const handleMediaClick = (index: number) => {
-    setSelectedMediaIndex(index);
-    setIsMediaModalOpen(true);
-  };
-
-  const handleMediaModalClose = () => {
-    setIsMediaModalOpen(false);
-  };
 
   if (locationId === null) return null;
 
@@ -82,7 +71,7 @@ const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, 
             </div>
           ) : location && (
             <>
-              <header className="p-4 border-b border-pink-500/30">
+              <div className="p-4 border-b border-pink-500/30">
                 <div className="flex justify-between items-start">
                   <div>
                     <div className="flex items-center gap-3 mb-2">
@@ -95,43 +84,11 @@ const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, 
                     <CloseIcon className="w-6 h-6" />
                   </button>
                 </div>
-              </header>
+              </div>
 
-              <main className="flex-grow overflow-y-auto">
+              <div className="flex-grow overflow-y-auto">
                 <div className="p-4">
-                  <div className="mb-4">
-                    <p className="text-sm font-bold text-pink-400 tracking-wider uppercase mb-2">Evidence Gallery</p>
-                    <div className="relative group cursor-pointer" onClick={() => handleMediaClick(0)}>
-                      <img 
-                        src={location.media[0].url} 
-                        alt={location.media[0].caption} 
-                        className="w-full h-48 object-cover rounded-lg" 
-                      />
-                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-lg">
-                        <p className="text-white font-bold">View Gallery</p>
-                      </div>
-                    </div>
-
-                    {location.media.length > 1 && (
-                      <div className="grid grid-cols-4 gap-2 mt-2">
-                        {location.media.map((item, index) => (
-                          <div 
-                            key={index}
-                            className="relative group cursor-pointer"
-                            onClick={() => handleMediaClick(index)}
-                          >
-                            <img 
-                              src={item.url} 
-                              alt={item.caption} 
-                              className="w-full h-16 object-cover rounded" 
-                            />
-                             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity rounded"></div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
+                  <img src={location.media[0].url} alt={location.media[0].caption} className="w-full h-48 object-cover rounded-lg mb-4" />
                   {location.warning && <div className="bg-yellow-900/50 border border-yellow-500 text-yellow-300 text-sm rounded-md p-3 mb-4">{location.warning}</div>}
                 </div>
 
@@ -152,9 +109,9 @@ const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, 
                         <span key={tag} className="bg-pink-900/50 text-pink-300 text-xs font-medium px-2.5 py-1 rounded-full">{tag}</span>
                     ))}
                 </div>
-              </main>
+              </div>
               
-              <footer className="p-4 border-t border-pink-500/30 space-y-3">
+              <div className="p-4 border-t border-pink-500/30 space-y-3">
                  <button 
                   onClick={() => setIsChatOpen(true)}
                   className="w-full bg-gray-800 text-pink-400 py-3 px-4 rounded-md border border-pink-500/50 hover:bg-gray-700/70 transition-all duration-300 font-bold"
@@ -168,19 +125,12 @@ const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, 
                     Create Case File
                   </button>
                 )}
-              </footer>
+              </div>
             </>
           )}
         </div>
       </div>
-      {location && isMediaModalOpen && (
-        <MediaGalleryModal 
-          media={location.media}
-          startIndex={selectedMediaIndex}
-          onClose={handleMediaModalClose}
-        />
-      )}
-      {location && <HistorianChat key={location.id} isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} location={location} />}
+      {location && <HistorianChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} location={location} />}
     </>
   );
 };

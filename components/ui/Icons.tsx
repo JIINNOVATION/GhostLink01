@@ -1,4 +1,5 @@
-import React from 'react';
+
+import * as React from 'react';
 
 export const GhostIcon = ({ className }: { className?: string }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -55,32 +56,5 @@ export const SendIcon = ({ className }: { className?: string }) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
         <line x1="22" y1="2" x2="11" y2="13"></line>
         <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-    </svg>
-);
-
-export const ChevronLeftIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
-  );
-  
-  export const ChevronRightIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <polyline points="9 18 15 12 9 6"></polyline>
-    </svg>
-  );
-
-  export const BrainCircuitIcon = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <path d="M12 5a3 3 0 1 0-5.993.142" />
-      <path d="M12 5a3 3 0 1 1 5.993.142" />
-      <path d="M15 13a3 3 0 1 0-5.993.142" />
-      <path d="M15 13a3 3 0 1 1 5.993.142" />
-      <path d="M9 13a3 3 0 1 0-5.993.142" />
-      <path d="M9 13a3 3 0 1 1 5.993.142" />
-      <path d="M6.007 8.142A3 3 0 1 0 9 5" />
-      <path d="M17.993 8.142A3 3 0 1 1 15 5" />
-      <path d="M12 16a3 3 0 1 0-5.993.142" />
-      <path d="M12 16a3 3 0 1 1 5.993.142" />
     </svg>
 );

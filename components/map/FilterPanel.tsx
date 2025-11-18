@@ -1,5 +1,5 @@
 
-import React from 'react';
+import * as React from 'react';
 import { LocationCategory } from '../../types';
 import { GpsIcon, GhostIcon, CrimeIcon, MysteryIcon, UserIcon } from '../ui/Icons';
 

@@ -1,8 +1,8 @@
 
-import React from 'react';
+import * as React from 'react';
 import { Marker, Tooltip } from 'react-leaflet';
 import { divIcon } from 'leaflet';
-import ReactDOMServer from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import type { LocationPin } from '../../types';
 import { LocationCategory } from '../../types';
 import { GhostIcon, CrimeIcon, MysteryIcon, UserIcon } from '../ui/Icons';
@@ -29,7 +29,7 @@ const CategoryIcon = ({ category }: { category: LocationCategory }) => {
 };
 
 const createCustomIcon = (category: LocationCategory) => {
-  const iconMarkup = ReactDOMServer.renderToString(
+  const iconMarkup = renderToString(
     <div className="relative flex items-center justify-center">
       <div className="absolute w-10 h-10 bg-pink-500 rounded-full opacity-30 animate-ping"></div>
       <div className="relative w-10 h-10 bg-black border-2 border-pink-500 rounded-full flex items-center justify-center">

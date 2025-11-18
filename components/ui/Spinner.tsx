@@ -1,5 +1,5 @@
 
-import React from 'react';
+import * as React from 'react';
 
 const Spinner = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) => {
   const sizeClasses = {

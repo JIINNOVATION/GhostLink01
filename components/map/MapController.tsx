@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import * as React from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import type { LatLngExpression, Map } from 'leaflet';
 import type { LocationPin } from '../../types';
@@ -14,7 +14,7 @@ interface MapControllerProps {
 const MapEventsController: React.FC<{ centerOn: LatLngExpression | null }> = ({ centerOn }) => {
   const map = useMap();
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (centerOn) {
       map.flyTo(centerOn, 15, {
         animate: true,
