@@ -1,20 +1,22 @@
 
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
-import type { LatLngExpression, Map } from 'leaflet';
+import type { LatLngExpression } from 'leaflet';
 import type { LocationPin } from '../../types';
 import LocationMarker from './LocationMarker';
+import type { AppTheme } from '../../services/locationService';
 
 interface MapControllerProps {
   locations: LocationPin[];
   onMarkerClick: (id: number) => void;
   centerOn?: LatLngExpression | null;
+  theme: AppTheme;
 }
 
 const MapEventsController: React.FC<{ centerOn: LatLngExpression | null }> = ({ centerOn }) => {
   const map = useMap();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (centerOn) {
       map.flyTo(centerOn, 15, {
         animate: true,
@@ -26,7 +28,7 @@ const MapEventsController: React.FC<{ centerOn: LatLngExpression | null }> = ({ 
   return null;
 };
 
-const MapController: React.FC<MapControllerProps> = ({ locations, onMarkerClick, centerOn }) => {
+const MapController: React.FC<MapControllerProps> = ({ locations, onMarkerClick, centerOn, theme }) => {
   const initialCenter: LatLngExpression = [39.8283, -98.5795]; // Center of the US
 
   return (
@@ -36,7 +38,7 @@ const MapController: React.FC<MapControllerProps> = ({ locations, onMarkerClick,
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
       />
       {locations.map((location) => (
-        <LocationMarker key={location.id} location={location} onClick={onMarkerClick} />
+        <LocationMarker key={location.id} location={location} onClick={onMarkerClick} theme={theme} />
       ))}
       <MapEventsController centerOn={centerOn} />
     </MapContainer>

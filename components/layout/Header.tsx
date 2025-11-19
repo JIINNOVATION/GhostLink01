@@ -1,38 +1,89 @@
-
-import * as React from 'react';
+import React from 'react';
 import { MOCK_USER } from '../../constants';
-import type { User } from '../../types';
-import { GhostIcon } from '../ui/Icons';
+import type { AppTheme } from '../../services/locationService';
+import { GhostIcon, AlienIcon } from '../ui/Icons';
 
 interface HeaderProps {
   isLoggedIn: boolean;
-  onLoginToggle: () => void;
+  onLoginClick: () => void;
+  onLogoutClick: () => void;
+  theme: AppTheme;
+  onThemeToggle: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLoginToggle }) => {
+const themeConfig = {
+  ghost: {
+    title: "The Ghost Link",
+    colorClass: 'text-pink-400',
+    shadowFilter: 'drop-shadow(0 0 5px #FF69B4)',
+  },
+  alien: {
+    title: "The Rift Tracker",
+    colorClass: 'text-green-400',
+    shadowFilter: 'drop-shadow(0 0 5px #00FF00)',
+  }
+};
+
+const switcherIconConfig = {
+  ghost: { // When theme is ghost, show the alien icon
+    Icon: AlienIcon,
+    colorClass: 'text-green-400',
+    shadowFilter: 'drop-shadow(0 0 5px #00FF00)',
+  },
+  alien: { // When theme is alien, show the ghost icon
+    Icon: GhostIcon,
+    colorClass: 'text-pink-400',
+    shadowFilter: 'drop-shadow(0 0 5px #FF69B4)',
+  }
+};
+
+const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLoginClick, onLogoutClick, theme, onThemeToggle }) => {
+  const currentThemeDetails = themeConfig[theme];
+  const switcherDetails = switcherIconConfig[theme];
+
+  const Title = currentThemeDetails.title;
+  const MainLogoIcon = GhostIcon; // Always display GhostIcon for the main logo
+  const mainLogoColor = currentThemeDetails.colorClass;
+  const mainLogoShadow = currentThemeDetails.shadowFilter;
+
+  const SwitcherIcon = switcherDetails.Icon;
+
   return (
     <header className="absolute top-0 left-0 right-0 z-[1000] p-4 bg-gradient-to-b from-black/80 to-transparent">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-2xl md:text-3xl font-bold text-pink-400 flex items-center gap-2" style={{ textShadow: '0 0 8px #FF69B4' }}>
-          <GhostIcon className="w-8 h-8"/>
-          The Ghost Link
+        <h1 className="text-2xl md:text-3xl font-bold text-theme-primary flex items-center gap-3" style={{ textShadow: '0 0 8px var(--theme-primary)' }}>
+          <MainLogoIcon 
+            className={`w-8 h-8 ${mainLogoColor}`} 
+            style={{ filter: mainLogoShadow }}
+          />
+          {Title}
         </h1>
-        <div>
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={onThemeToggle}
+            title="Switch Feed"
+            className="bg-black/50 p-2.5 rounded-md border border-gray-600 group transition-all duration-300"
+          >
+            <SwitcherIcon 
+              className={`w-5 h-5 ${switcherDetails.colorClass} group-hover:scale-110 transition-transform`}
+              style={{ filter: switcherDetails.shadowFilter }}
+            />
+          </button>
           {isLoggedIn ? (
             <div className="flex items-center gap-3">
               <span className="hidden sm:inline text-sm text-gray-300">Welcome, {MOCK_USER.username}</span>
-              <img src={MOCK_USER.avatarUrl} alt="User Avatar" className="w-10 h-10 rounded-full border-2 border-pink-500" />
+              <img src={MOCK_USER.avatarUrl} alt="User Avatar" className="w-10 h-10 rounded-full border-2 border-theme-primary" />
                <button 
-                onClick={onLoginToggle}
-                className="bg-pink-600/50 text-white py-2 px-4 rounded-md border border-pink-500 hover:bg-pink-500/70 transition-all duration-300"
+                onClick={onLogoutClick}
+                className="bg-theme-primary/20 text-white py-2 px-4 rounded-md border border-theme-primary hover:bg-theme-primary/40 transition-all duration-300"
               >
                 Logout
               </button>
             </div>
           ) : (
             <button 
-              onClick={onLoginToggle}
-              className="bg-pink-600/50 text-white py-2 px-4 rounded-md border border-pink-500 hover:bg-pink-500/70 transition-all duration-300"
+              onClick={onLoginClick}
+              className="bg-theme-primary/20 text-white py-2 px-4 rounded-md border border-theme-primary hover:bg-theme-primary/40 transition-all duration-300"
             >
               Login / Sign Up
             </button>

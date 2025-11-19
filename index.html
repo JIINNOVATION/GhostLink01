@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -12,6 +13,24 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
+      :root {
+        --theme-primary: #FF69B4;
+        --theme-primary-dark: #9d3369;
+        --theme-primary-light: #ff8cc6;
+        --theme-shadow: 0 0 10px var(--theme-primary);
+        --theme-shadow-lg: 0 0 20px var(--theme-primary);
+        --theme-shadow-sm: 0 0 5px var(--theme-primary);
+      }
+      body.theme-ghost {
+        --theme-primary: #FF69B4;
+        --theme-primary-dark: #9d3369;
+        --theme-primary-light: #ff8cc6;
+      }
+      body.theme-alien {
+        --theme-primary: #00FF00;
+        --theme-primary-dark: #009900;
+        --theme-primary-light: #66ff66;
+      }
       body {
         font-family: 'Roboto', sans-serif;
       }
@@ -24,23 +43,46 @@
       }
       .leaflet-tooltip {
         background-color: #111 !important;
-        color: #FF69B4 !important;
-        border: 1px solid #FF69B4 !important;
+        color: var(--theme-primary) !important;
+        border: 1px solid var(--theme-primary) !important;
         border-radius: 4px;
-        box-shadow: 0 0 10px #FF69B4;
+        box-shadow: var(--theme-shadow);
+      }
+      .image-gallery-scrollbar::-webkit-scrollbar {
+        height: 6px;
+      }
+      .image-gallery-scrollbar::-webkit-scrollbar-track {
+        background: #1a1a1a;
+        border-radius: 10px;
+      }
+      .image-gallery-scrollbar::-webkit-scrollbar-thumb {
+        background-color: var(--theme-primary-dark);
+        border-radius: 10px;
+        border: 1px solid #1a1a1a;
       }
     </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'theme-primary': 'var(--theme-primary)',
+            'theme-primary-dark': 'var(--theme-primary-dark)',
+            'theme-primary-light': 'var(--theme-primary-light)',
+          }
+        }
+      }
+    }
+  </script>
   <script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@18.2.0",
-    "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
-    "react-dom/server": "https://esm.sh/react-dom@18.2.0/server",
-    "react-leaflet": "https://esm.sh/react-leaflet@4.2.1",
-    "leaflet": "https://esm.sh/leaflet@1.9.4",
-    "@google/genai": "https://esm.sh/@google/genai",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-leaflet": "https://aistudiocdn.com/react-leaflet@^5.0.0",
+    "leaflet": "https://aistudiocdn.com/leaflet@^1.9.4"
   }
 }
 </script>

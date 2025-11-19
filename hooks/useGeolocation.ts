@@ -1,5 +1,5 @@
 
-import * as React from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { LatLngTuple } from 'leaflet';
 
 interface GeolocationState {
@@ -9,13 +9,13 @@ interface GeolocationState {
 }
 
 export const useGeolocation = () => {
-  const [state, setState] = React.useState<GeolocationState>({
+  const [state, setState] = useState<GeolocationState>({
     loading: false,
     position: null,
     error: null,
   });
 
-  const locate = React.useCallback(() => {
+  const locate = useCallback(() => {
     if (!navigator.geolocation) {
       // Not an error, just not supported
       return;

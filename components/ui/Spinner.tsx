@@ -1,5 +1,5 @@
 
-import * as React from 'react';
+import React from 'react';
 
 const Spinner = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) => {
   const sizeClasses = {
@@ -9,8 +9,8 @@ const Spinner = ({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) => {
   };
 
   return (
-    <div className={`animate-spin rounded-full border-4 border-gray-600 border-t-pink-500 ${sizeClasses[size]}`}
-         style={{ borderTopColor: '#FF69B4' }}>
+    <div className={`animate-spin rounded-full border-4 border-gray-600 border-t-theme-primary ${sizeClasses[size]}`}
+         style={{ borderTopColor: 'var(--theme-primary)' }}>
     </div>
   );
 };

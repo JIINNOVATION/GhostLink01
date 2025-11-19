@@ -1,5 +1,5 @@
 
-import * as React from 'react';
+import React from 'react';
 import { CloseIcon } from './Icons';
 
 interface ModalProps {
@@ -18,12 +18,13 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
       onClick={onClose}
     >
       <div 
-        className="bg-black border border-pink-500/50 rounded-lg shadow-2xl shadow-pink-500/10 w-full max-w-2xl mx-4 max-h-[90vh] flex flex-col"
+        className="bg-black border border-theme-primary/50 rounded-lg shadow-2xl w-full max-w-2xl mx-4 max-h-[90vh] flex flex-col"
+        style={{ boxShadow: '0 0 20px 0 rgba(var(--theme-primary-rgb), 0.1)' }}
         onClick={e => e.stopPropagation()}
       >
-        <header className="flex items-center justify-between p-4 border-b border-pink-500/30">
-          <h2 className="text-xl font-bold text-pink-400 tracking-wider">{title}</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-pink-400 transition-colors">
+        <header className="flex items-center justify-between p-4 border-b border-theme-primary/30">
+          <h2 className="text-xl font-bold text-theme-primary tracking-wider">{title}</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-theme-primary transition-colors">
             <CloseIcon className="w-6 h-6" />
           </button>
         </header>

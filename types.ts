@@ -2,10 +2,15 @@
 import { LatLngExpression } from 'leaflet';
 
 export enum LocationCategory {
+  // Ghost Theme
   HAUNTED = 'Haunted Locations',
   CRIME = 'Crime Scenes',
   MYSTERY = 'Unsolved Mysteries',
   USER = 'User-Submitted',
+  // Alien Theme
+  ALIEN = 'Alien & UFO Hotspots',
+  CRYPTID = 'Cryptid Sightings',
+  VORTEX = 'Vortex & Dimensional',
 }
 
 export interface LocationPin {
@@ -15,10 +20,9 @@ export interface LocationPin {
   category: LocationCategory;
 }
 
-export interface DossierContent {
-  spiritStories: string;
-  crimeAndPunishment: string;
-  socialHistory: string;
+export interface DossierSection {
+  title: string;
+  content: string;
 }
 
 export interface LocationFull {
@@ -27,7 +31,7 @@ export interface LocationFull {
   address: string;
   coordinates: LatLngExpression;
   category: LocationCategory;
-  dossier: DossierContent;
+  dossier: DossierSection[];
   media: { type: 'image' | 'video'; url: string; caption: string }[];
   tags: string[];
   warning?: string;
