@@ -21,8 +21,8 @@ export const locationService = {
   fetchLocationDetails: (id: number, theme: AppTheme): Promise<LocationFull | undefined> => {
     console.log(`Fetching details for location ID: ${id} with theme: ${theme}`);
     const data = getDataForTheme(theme);
-    // Fallback to first item in the current theme's details if ID not found
-    const details = data.details[id] ?? data.details[Object.keys(data.details)[0]];
+    // Direct lookup without faulty fallback to prevent incorrect data display.
+    const details = data.details[id];
     return apiCall(details);
   },
 };

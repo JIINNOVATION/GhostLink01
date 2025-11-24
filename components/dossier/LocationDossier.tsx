@@ -10,6 +10,7 @@ import ImageGalleryItem from './ImageGalleryItem';
 import { generateSpeech } from '../../services/geminiService';
 import { decode, decodeAudioData } from '../../utils/audioUtils';
 import UploadPhotoModal from './UploadPhotoModal';
+import CreateCaseFileModal from './CreateCaseFileModal';
 
 
 interface LocationDossierProps {
@@ -42,6 +43,7 @@ const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, 
   const audioSourceRef = useRef<AudioBufferSourceNode | null>(null);
 
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [isCaseFileModalOpen, setIsCaseFileModalOpen] = useState(false);
   const [photoToUpload, setPhotoToUpload] = useState<{ file: File, previewUrl: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -151,7 +153,7 @@ const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, 
 
   const handleCreateCaseFileClick = () => {
     if (isLoggedIn) {
-      console.log('User is logged in. Creating case file...');
+      setIsCaseFileModalOpen(true);
     } else {
       onLoginRequest();
     }
@@ -176,6 +178,13 @@ const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, 
   const handlePhotoSubmit = async (caption: string) => {
     if (!photoToUpload || !location) return;
     console.log(`Submitting photo for ${location.name}:`, { fileName: photoToUpload.file.name, caption: caption });
+    await new Promise(resolve => setTimeout(resolve, 1500));
+  };
+
+  const handleCaseFileSubmit = async (title: string, description: string) => {
+    if (!location) return;
+    console.log(`Saving case file for ${location.name}:`, { title, description });
+    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1500));
   };
 
@@ -259,6 +268,7 @@ const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, 
           )}
         </div>
       </div>
+      {location && <CreateCaseFileModal isOpen={isCaseFileModalOpen} onClose={() => setIsCaseFileModalOpen(false)} onSubmit={handleCaseFileSubmit} locationName={location.name} />}
       {location && photoToUpload && <UploadPhotoModal isOpen={isUploadModalOpen} onClose={handleUploadModalClose} onSubmit={handlePhotoSubmit} photoPreviewUrl={photoToUpload.previewUrl} locationName={location.name} />}
       {location && <HistorianChat isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} location={location} />}
     </>

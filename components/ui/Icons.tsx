@@ -106,3 +106,27 @@ export const VortexIcon = (props: React.SVGProps<SVGSVGElement>) => ( // Spiral
     <path d="M6.6 6.6c-3 3-3 7.8 0 10.8s7.8 3 10.8 0"/>
   </svg>
 );
+
+export const BrainCircuitIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 2a4.5 4.5 0 0 0-4.5 4.5c0 1.42.66 2.68 1.69 3.52" />
+    <path d="M12 2a4.5 4.5 0 0 1 4.5 4.5c0 1.42-.66 2.68-1.69 3.52" />
+    <path d="M5 15.5A4.5 4.5 0 0 0 9.5 20a4.5 4.5 0 0 0 4.48-4" />
+    <path d="M19 15.5a4.5 4.5 0 0 1-4.5 4.5A4.5 4.5 0 0 1 10 16" />
+    <path d="M2 12h3" />
+    <path d="M19 12h3" />
+    <path d="M12 17v3" />
+    <path d="M12 5.5V9" />
+    <path d="M9.5 12H15" />
+    <circle cx="12" cy="12" r="1.5" />
+  </svg>
+);
+
+export const MicrophoneIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+        <line x1="12" y1="19" x2="12" y2="23"></line>
+        <line x1="8" y1="23" x2="16" y2="23"></line>
+    </svg>
+);

@@ -45,7 +45,13 @@ export interface User {
   badges: string[];
 }
 
+export interface Citation {
+  uri: string;
+  title: string;
+}
+
 export interface ChatMessage {
     role: 'user' | 'model';
     text: string;
+    citations?: Citation[];
 }

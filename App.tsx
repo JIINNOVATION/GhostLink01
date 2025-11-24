@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import type { LatLngExpression } from 'leaflet';
 import Header from './components/layout/Header';
@@ -7,9 +6,11 @@ import FilterPanel from './components/map/FilterPanel';
 import LocationDossier from './components/dossier/LocationDossier';
 import LoginModal from './components/auth/LoginModal';
 import { locationService, AppTheme } from './services/locationService';
-import type { LocationPin } from './types';
+import type { LocationPin, LocationFull } from './types';
 import { LocationCategory } from './types';
 import { useGeolocation } from './hooks/useGeolocation';
+import { MOCK_GHOST_DATA, MOCK_ALIEN_DATA } from './constants';
+import TheLink from './components/ai/TheLink';
 
 const ghostFilters = {
     [LocationCategory.HAUNTED]: true,
@@ -40,6 +41,11 @@ const App: React.FC = () => {
     ...ghostFilters,
     ...alienFilters,
   });
+
+  const allLocations: LocationFull[] = [
+    ...Object.values(MOCK_GHOST_DATA.details), 
+    ...Object.values(MOCK_ALIEN_DATA.details)
+  ];
 
   useEffect(() => {
     document.body.className = `theme-${theme} bg-black text-gray-200`;
@@ -124,6 +130,7 @@ const App: React.FC = () => {
         onClose={() => setIsLoginModalOpen(false)}
         onLogin={handleLoginStateChange}
       />
+      <TheLink allLocations={allLocations} />
     </div>
   );
 };
