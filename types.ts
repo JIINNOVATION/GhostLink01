@@ -50,6 +50,11 @@ export interface Citation {
   title: string;
 }
 
+export interface AIResponse {
+    text: string;
+    citations: Citation[];
+}
+
 export interface ChatMessage {
     role: 'user' | 'model';
     text: string;

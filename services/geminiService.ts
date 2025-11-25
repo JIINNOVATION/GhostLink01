@@ -1,12 +1,7 @@
 
 
 import { GoogleGenAI, Modality } from "@google/genai";
-import type { Citation } from '../types';
-
-export interface AskTheLinkResponse {
-    text: string;
-    citations: Citation[];
-}
+import type { Citation, AIResponse } from '../types';
 
 const API_KEY = process.env.API_KEY;
 
@@ -18,39 +13,54 @@ if (!ai) {
   console.warn("API_KEY is not set. AI functions will be disabled.");
 }
 
-
-export const askHistorian = async (question: string, context: string, appName: string): Promise<string> => {
+export const askHistorian = async (question: string, context: string, locationName: string): Promise<AIResponse> => {
   if (!ai) {
-    return Promise.resolve("The AI Historian is currently offline. Please try again later.");
+    return Promise.resolve({ text: "The AI Historian is currently offline. Please try again later.", citations: [] });
   }
 
   const model = "gemini-2.5-flash";
-  const systemInstruction = `You are an AI Historian for an app called '${appName}'. Your role is to answer user questions about specific locations based on the provided context. 
-  - You MUST be factual and base your answers strictly on the context provided.
-  - DO NOT invent information or speculate beyond the context.
-  - DO NOT role-play as a ghost, spirit, alien or any other entity. You are a historical assistant.
-  - If the answer is not in the context, state that the information is not available in the dossier.
-  - Keep answers concise and to the point.
-  - Format your response using markdown for readability.`;
+  const systemInstruction = `You are an AI Historian specializing in the location: '${locationName}'. Your role is to answer user questions.
+- Your primary source of information is the provided context (the location's dossier). You must prioritize it.
+- If a user asks a question about a different location, you MUST politely decline and direct them to use 'The Link' for broader questions.
+- If the answer is not in the context, you MUST use your web search tool to find the answer.
+- CRITICAL: Never state that you are searching the web or that information is not in the dossier. Simply provide the answer seamlessly as if it is part of your knowledge.
+- When you use web search, you MUST provide citations.
+- Be factual, concise, and act as a historical assistant. Format responses using markdown.`;
 
   try {
     const response = await ai.models.generateContent({
       model,
-      contents: `CONTEXT:
+      contents: `CONTEXT FOR '${locationName}':
 ---
 ${context}
 ---
-QUESTION: ${question}`,
+USER QUESTION: ${question}`,
       config: {
         systemInstruction,
         temperature: 0.2,
+        tools: [{googleSearch: {}}],
       },
     });
 
-    return response.text;
+    const citations: Citation[] = [];
+    if (response.candidates?.[0]?.groundingMetadata?.groundingChunks) {
+        for (const chunk of response.candidates[0].groundingMetadata.groundingChunks) {
+            if (chunk.web) {
+                citations.push({ uri: chunk.web.uri, title: chunk.web.title || chunk.web.uri });
+            }
+        }
+    }
+
+    return {
+        text: response.text,
+        citations,
+    };
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    return "I'm sorry, I encountered an error while researching your question. Please try again.";
+    console.error("Gemini API Error (Historian):", error);
+    return {
+        text: "I'm sorry, I encountered an error while researching your question. Please try again.",
+        citations: [],
+    };
   }
 };
 
@@ -65,9 +75,6 @@ export const generateLocationImage = async (prompt: string): Promise<string> => 
       model: 'gemini-2.5-flash-image',
       contents: {
         parts: [{ text: prompt }],
-      },
-      config: {
-        responseModalities: [Modality.IMAGE],
       },
     });
 
@@ -100,7 +107,6 @@ export const generateSpeech = async (text: string): Promise<string | null> => {
         responseModalities: [Modality.AUDIO],
         speechConfig: {
           voiceConfig: {
-            // Using 'Charon' for a deep, calming, story-teller voice as requested.
             prebuiltVoiceConfig: { voiceName: 'Charon' },
           },
         },
@@ -119,19 +125,19 @@ export const generateSpeech = async (text: string): Promise<string | null> => {
   }
 };
 
-export const askTheLink = async (question: string, allLocationsContext: string): Promise<AskTheLinkResponse> => {
+export const askTheLink = async (question: string, allLocationsContext: string): Promise<AIResponse> => {
   if (!ai) {
     return Promise.resolve({ text: "The Link is currently offline. Please try again later.", citations: [] });
   }
 
   const model = "gemini-2.5-flash";
-  const systemInstruction = `You are 'The Link', an ultimate AI guide for an app that investigates paranormal and cryptozoological phenomena. The app has two feeds: 'The Ghost Link' for ghosts and mysteries, and 'The Rift Tracker' for aliens and cryptids.
-- You have access to a database of all known locations across both feeds. Use this as your primary source of information.
-- You ALSO have the ability to search the web via Google Search to answer questions beyond the internal database, such as general knowledge questions (e.g., 'What is an EMF device?') or practical, real-world questions (e.g., 'What are some good restaurants near the Winchester Mystery House?').
+  const systemInstruction = `You are 'The Link', an ultimate AI guide for an app that investigates paranormal and cryptozoological phenomena.
+- You have access to an internal database of all known locations. Use this as your primary source for location-specific questions.
+- You ALSO have the ability to search the web via Google Search to answer questions beyond the internal database, such as general knowledge questions (e.g., 'What is an EMF device?').
+- CRITICAL: Never state that you are searching the web. Simply provide the answer seamlessly as if it is part of your vast knowledge.
 - When you use web search, you MUST cite your sources.
-- If a user asks a subjective question (e.g., 'which is scarier?'), provide a comparative analysis based on the facts in the internal database.
 - Be conversational but authoritative. You are the central intelligence of the app.
-- Format your response using markdown for readability.`;
+- Format your response using markdown.`;
 
   try {
     const response = await ai.models.generateContent({

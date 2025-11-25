@@ -1,17 +1,19 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { generateLocationImage } from '../../services/geminiService';
 import Spinner from '../ui/Spinner';
+import { ShareIcon, UploadIcon } from '../ui/Icons';
 
 interface ImageGalleryItemProps {
     mediaItem: { type: 'image' | 'video'; url: string; caption: string };
     locationName: string;
+    shareUrl: string;
+    onUploadClick: () => void;
 }
 
 // In-memory cache for generated images for the current session.
 const generatedImageCache: Record<string, string> = {};
 
-const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({ mediaItem, locationName }) => {
+const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({ mediaItem, locationName, shareUrl, onUploadClick }) => {
     const [imageUrl, setImageUrl] = useState<string | null>(mediaItem.url);
     const [status, setStatus] = useState<'loading' | 'error' | 'generating' | 'loaded'>('loading');
     const hasAttemptedGeneration = useRef(false);
@@ -68,6 +70,25 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({ mediaItem, location
         }
     };
 
+    const handleShare = async () => {
+      const shareData = {
+        title: `Investigation: ${locationName}`,
+        text: `Check out this location on The Ghost Link: ${locationName}`,
+        url: shareUrl,
+      };
+      if (navigator.share) {
+        try {
+          await navigator.share(shareData);
+        } catch (err) {
+          console.error("Error sharing:", err);
+        }
+      } else {
+        // Fallback for desktop
+        navigator.clipboard.writeText(shareUrl);
+        alert('Link copied to clipboard!'); 
+      }
+    };
+
     const renderStatus = () => {
         switch (status) {
             case 'generating':
@@ -107,12 +128,19 @@ const ImageGalleryItem: React.FC<ImageGalleryItemProps> = ({ mediaItem, location
                     />
                 )}
             </div>
-            <div className="p-3 bg-black">
-                <p className="text-xs text-gray-400 leading-tight">{mediaItem.caption}</p>
+            <div className="p-3 bg-black flex justify-between items-center">
+                <p className="text-xs text-gray-400 leading-tight flex-grow mr-2">{mediaItem.caption}</p>
+                 <div className="flex items-center gap-3 flex-shrink-0">
+                    <button onClick={handleShare} title="Share Location">
+                        <ShareIcon className="w-4 h-4 text-gray-500 hover:text-theme-primary transition-colors" />
+                    </button>
+                    <button onClick={onUploadClick} title="Upload Your Photo">
+                        <UploadIcon className="w-4 h-4 text-gray-500 hover:text-theme-primary transition-colors" />
+                    </button>
+                </div>
             </div>
         </div>
     );
 };
 
 export default ImageGalleryItem;
-    

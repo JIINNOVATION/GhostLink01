@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import type { LocationFull, DossierSection } from '../../types';
 import { locationService, AppTheme } from '../../services/locationService';
@@ -97,6 +96,14 @@ const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, 
     }
     if (audioState === 'generating' || !location) return;
 
+    // This is required for mobile browsers.
+    if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
+    }
+    if (audioContextRef.current.state === 'suspended') {
+        audioContextRef.current.resume();
+    }
+    
     setAudioState('generating');
     const activeSection = location.dossier.find(s => s.title === activeTabTitle);
     const textToSpeak = activeSection?.content || '';
@@ -109,9 +116,6 @@ const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, 
     }
 
     try {
-      if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
-      }
       const audioContext = audioContextRef.current;
       const audioBuffer = await decodeAudioData(decode(base64Audio), audioContext, 24000, 1);
       stopAudio();
@@ -196,6 +200,7 @@ const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, 
 
   const CategoryIcon = location ? allCategoryDetails[location.category].Icon : GhostIcon;
   const currentMediaItem = location?.media[currentImageIndex];
+  const shareUrl = location ? `${window.location.origin}${window.location.pathname}#/${theme}/${location.id}` : '';
 
   return (
     <>
@@ -223,7 +228,15 @@ const LocationDossier: React.FC<LocationDossierProps> = ({ locationId, onClose, 
                 <div className="py-4 px-4">
                   <h3 className="text-lg font-semibold text-theme-primary mb-3 tracking-wider">Visual Evidence</h3>
                   <div className="relative group">
-                    {currentMediaItem && <ImageGalleryItem key={`${location.id}-${currentImageIndex}`} mediaItem={currentMediaItem} locationName={location.name} />}
+                    {currentMediaItem && (
+                      <ImageGalleryItem 
+                        key={`${location.id}-${currentImageIndex}`} 
+                        mediaItem={currentMediaItem} 
+                        locationName={location.name}
+                        shareUrl={shareUrl}
+                        onUploadClick={handleUploadClick}
+                      />
+                    )}
                     {location.media.length > 1 && (
                       <>
                         <button onClick={handlePrevImage} className="absolute top-1/2 -translate-y-1/2 left-2 bg-black/50 p-1 rounded-full text-white hover:bg-black/80 transition-opacity opacity-0 group-hover:opacity-100"><ChevronLeftIcon className="w-6 h-6" /></button>

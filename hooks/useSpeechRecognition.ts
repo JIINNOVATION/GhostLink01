@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 // FIX: Add type definitions for the Web Speech API as they are not included in standard TypeScript DOM libraries.
@@ -79,17 +80,16 @@ export const useSpeechRecognition = (): SpeechRecognitionHook => {
 
     const recognition = new SpeechRecognitionAPI();
     recognition.continuous = true;
-    recognition.interimResults = true;
+    recognition.interimResults = true; // Get results as the user speaks
     recognition.lang = 'en-US';
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
-      let finalTranscript = '';
-      for (let i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) {
-          finalTranscript += event.results[i][0].transcript;
-        }
-      }
-      setTranscript(prev => prev + finalTranscript);
+      // Assemble the full transcript from all results
+      const fullTranscript = Array.from(event.results)
+        .map(result => result[0])
+        .map(result => result.transcript)
+        .join('');
+      setTranscript(fullTranscript);
     };
 
     recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
@@ -105,7 +105,9 @@ export const useSpeechRecognition = (): SpeechRecognitionHook => {
     recognitionRef.current = recognition;
 
     return () => {
-      recognition.stop();
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
     };
   }, []);
 

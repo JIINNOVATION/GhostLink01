@@ -42,6 +42,18 @@ export const MOCK_GHOST_DATA: { pins: LocationPin[], details: Record<number, Loc
     { id: 29, name: 'The Boy in the Box', coordinates: [39.9955, -75.1182], category: LocationCategory.MYSTERY },
     { id: 30, name: 'Texarkana Moonlight Murders', coordinates: [33.4418, -94.0660], category: LocationCategory.MYSTERY },
     { id: 39, name: 'Amelia Earhart\'s Last Known Area', coordinates: [ -0.8713, -176.6234], category: LocationCategory.MYSTERY },
+    // Ohio Locations
+    { id: 40, name: 'Ohio State Reformatory', coordinates: [40.7839, -82.5029], category: LocationCategory.HAUNTED },
+    { id: 41, name: 'Moonville Tunnel', coordinates: [39.3103, -82.3213], category: LocationCategory.HAUNTED },
+    { id: 42, name: 'Franklin Castle', coordinates: [41.4886, -81.6586], category: LocationCategory.HAUNTED },
+    { id: 43, name: 'Thurber House', coordinates: [39.9678, -82.9818], category: LocationCategory.HAUNTED },
+    { id: 44, name: 'USS Cod Submarine Memorial', coordinates: [41.5076, -81.6881], category: LocationCategory.HAUNTED },
+    // Pennsylvania Locations
+    { id: 45, name: 'Pennhurst State School', coordinates: [40.1691, -75.5684], category: LocationCategory.HAUNTED },
+    { id: 46, name: 'Hotel Bethlehem', coordinates: [40.6226, -75.3800], category: LocationCategory.HAUNTED },
+    { id: 47, name: 'Farnsworth House Inn', coordinates: [39.8286, -77.2300], category: LocationCategory.HAUNTED },
+    { id: 48, name: 'Mütter Museum', coordinates: [39.9535, -75.1747], category: LocationCategory.HAUNTED },
+    { id: 49, name: 'Jean Bonnet Tavern', coordinates: [40.0192, -78.5832], category: LocationCategory.HAUNTED },
   ],
   details: {
     1: {
@@ -93,6 +105,117 @@ export const MOCK_GHOST_DATA: { pins: LocationPin[], details: Record<number, Loc
     29: { id: 29, name: 'The Boy in the Box', address: 'Philadelphia, PA', coordinates: [39.9955, -75.1182], category: LocationCategory.MYSTERY, dossier: [ { title: 'Crime & Punishment', content: 'In 1957, the body of an unidentified young boy was found in a cardboard box in Philadelphia. For decades, he was known as "America\'s Unknown Child." The case remained a complete mystery until 2022, when investigators finally identified the boy as Joseph Augustus Zarelli.' }, { title: 'Social History', content: 'The case haunted Philadelphia for generations, with investigators relentlessly pursuing leads to give the boy his name back. The recent identification through forensic genealogy marks a major breakthrough, though the circumstances of his death are still under investigation.' } ], media: [ { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/en/thumb/8/87/Boy_in_the_Box_photo.jpg/600px-Boy_in_the_Box_photo.jpg', caption: 'The original police poster seeking information about the unidentified boy.' } ], tags: ['1950s', 'Forensic Genealogy', 'Cold Case'] },
     30: { id: 30, name: 'Texarkana Moonlight Murders', address: 'Texarkana, TX/AR', coordinates: [33.4418, -94.0660], category: LocationCategory.MYSTERY, dossier: [ { title: 'Crime & Punishment', content: 'In the spring of 1946, a hooded serial killer known as the "Phantom Killer" attacked eight people, killing five, in the border town of Texarkana. The attacks occurred at night on weekends, creating widespread panic.' }, { title: 'Social History', content: 'The town was gripped by terror, with residents arming themselves and staying home after dark. The case inspired the classic horror film "The Town That Dreaded Sundown." The Phantom Killer was never caught, and the case remains officially unsolved.' } ], media: [ { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Texarkana_US_Post_Office_and_Courthouse.jpg/600px-Texarkana_US_Post_Office_and_Courthouse.jpg', caption: 'The unique post office and courthouse that sits on the Texas-Arkansas state line.' } ], tags: ['1940s', 'Serial Killer', 'Urban Legend'] },
     39: { id: 39, name: 'Amelia Earhart\'s Last Known Area', address: 'Howland Island, Pacific Ocean', coordinates: [-0.8713, -176.6234], category: LocationCategory.MYSTERY, dossier: [ { title: 'Crime & Punishment', content: 'In 1937, pioneering aviator Amelia Earhart and navigator Fred Noonan disappeared over the central Pacific Ocean near Howland Island during an attempt to circumnavigate the globe. The ensuing search was the most extensive in naval history at the time, but no trace was ever found.' }, { title: 'Social History', content: 'Earhart was a global celebrity and a symbol of female empowerment. Her disappearance has become one of the most enduring mysteries of the 20th century, spawning numerous theories ranging from crashing at sea to being captured by the Japanese.' } ], media: [ { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Amelia_Earhart_standing_under_nose_of_her_Lockheed_Model_10-E_Electra%2C_small.jpg/600px-Amelia_Earhart_standing_under_nose_of_her_Lockheed_Model_10-E_Electra%2C_small.jpg', caption: 'Amelia Earhart with her Lockheed Electra 10E plane.' } ], tags: ['1930s', 'Aviation', 'Unsolved Mystery'] },
+    40: {
+      id: 40, name: 'Ohio State Reformatory', address: '100 Reformatory Rd, Mansfield, OH 44905', coordinates: [40.7839, -82.5029], category: LocationCategory.HAUNTED,
+      dossier: [
+        { title: 'Spirit Stories', content: 'This imposing Gothic prison is known for extreme paranormal activity, especially in the solitary confinement area known as "The Hole." Visitors report hearing disembodied voices, seeing shadow figures darting in the cellblocks, and feeling the presence of former inmates and a guard who was murdered during an escape attempt.' },
+        { title: 'Social History', content: 'Built between 1886 and 1910, the reformatory was intended to reform young offenders but became notorious for overcrowding and brutal conditions. Its fame was cemented as the primary filming location for the movie *The Shawshank Redemption*.' }
+      ],
+      media: [
+        { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Ohio_State_Reformatory_-_Front.jpg/600px-Ohio_State_Reformatory_-_Front.jpg', caption: 'The imposing Gothic facade of the Ohio State Reformatory.' },
+        { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Ohio_State_Reformatory_East_Cell_Block.jpg/600px-Ohio_State_Reformatory_East_Cell_Block.jpg', caption: 'The East Cell Block, the largest free-standing steel cell block in the world.' }
+      ],
+      tags: ['Prison', 'Gothic Architecture', 'Shawshank Redemption']
+    },
+    41: {
+      id: 41, name: 'Moonville Tunnel', address: 'Moonville, Vinton County, OH', coordinates: [39.3103, -82.3213], category: LocationCategory.HAUNTED,
+      dossier: [
+        { title: 'Spirit Stories', content: 'The main spirit said to haunt this abandoned railroad tunnel is a brakeman who was killed by a train in the late 1800s. Visitors report seeing a swinging lantern in the darkness, disembodied voices, and ghostly figures. Another local legend tells of a "Lavender Lady" who also haunts the area.' },
+        { title: 'Social History', content: 'The tunnel is one of the last remaining relics of the ghost town of Moonville, a former coal mining community. Its remote and eerie location has made it a popular destination for paranormal investigators and local thrill-seekers.' }
+      ],
+      media: [
+        { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Moonville_Tunnel_2017.jpg/600px-Moonville_Tunnel_2017.jpg', caption: 'The notoriously haunted Moonville Tunnel entrance.' }
+      ],
+      tags: ['Railroad', 'Tunnel', 'Local Legend']
+    },
+    42: {
+      id: 42, name: 'Franklin Castle', address: '4308 Franklin Blvd, Cleveland, OH 44113', coordinates: [41.4886, -81.6586], category: LocationCategory.HAUNTED,
+      dossier: [
+        { title: 'Spirit Stories', content: 'Considered Ohio\'s most haunted house, this Victorian mansion is known for its dark history of family tragedy. The spirits of the Hannes Tiedemann family, who suffered numerous deaths here, are said to remain. Reports include the cries of a child, a mysterious "woman in black," and apparitions in the windows.' },
+        { title: 'Social History', content: 'The castle features hidden passages, a ballroom where strange events occur, and a tower with a grim past. Its history of tragedy and its Gothic architecture have fueled its reputation as a paranormal hotspot for over a century.' }
+      ],
+      media: [
+        { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Franklin_Castle_in_Cleveland_in_2021.jpg/600px-Franklin_Castle_in_Cleveland_in_2021.jpg', caption: 'The imposing exterior of Franklin Castle.' }
+      ],
+      tags: ['Victorian', 'Family Curse', 'Cleveland']
+    },
+    43: {
+      id: 43, name: 'Thurber House', address: '77 Jefferson Ave, Columbus, OH 43215', coordinates: [39.9678, -82.9818], category: LocationCategory.HAUNTED,
+      dossier: [
+        { title: 'Spirit Stories', content: 'The former home of celebrated author James Thurber, who famously documented his own paranormal encounter in his story "The Night the Ghost Got In." The resident ghost is believed to be a man who died in the house in the 19th century. Staff and visitors report hearing phantom footsteps on the stairs and the sound of books being knocked off shelves.' },
+        { title: 'Social History', content: 'The house is now a literary center and museum dedicated to Thurber\'s work. It has embraced its haunted reputation, offering ghost tours and sharing stories of its resident spirit with visitors.' }
+      ],
+      media: [
+        { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Thurber_House_2018.jpg/600px-Thurber_House_2018.jpg', caption: 'The historic Thurber House in Columbus, Ohio.' }
+      ],
+      tags: ['Literary History', 'James Thurber', 'Columbus']
+    },
+    44: {
+      id: 44, name: 'USS Cod Submarine Memorial', address: '1201 N Marginal Rd, Cleveland, OH 44114', coordinates: [41.5076, -81.6881], category: LocationCategory.HAUNTED,
+      dossier: [
+        { title: 'Spirit Stories', content: 'This historic WWII submarine is believed to be haunted by the ghost of a crewman. Visitors report strange feelings, unexplained noises like banging on the hull from the inside, and a shadowy figure in the tight corridors of the engine room. Hatches are also known to open and close on their own.' },
+        { title: 'Social History', content: 'The USS Cod is a GATO-class submarine that saw extensive service in the Pacific during World War II. It is now a National Historic Landmark and museum ship, perfectly preserved to its 1945 configuration.' }
+      ],
+      media: [
+        { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/USS_Cod_SS-224_Cleveland_OH.jpg/600px-USS_Cod_SS-224_Cleveland_OH.jpg', caption: 'The USS Cod Submarine Memorial docked in Cleveland.' }
+      ],
+      tags: ['WWII', 'Submarine', 'Military Ghost']
+    },
+    45: {
+      id: 45, name: 'Pennhurst State School', address: '1205 Commonwealth Dr, Spring City, PA 19475', coordinates: [40.1691, -75.5684], category: LocationCategory.HAUNTED,
+      dossier: [
+        { title: 'Spirit Stories', content: 'An institution infamous for its horrific conditions and patient abuse. The immense suffering has left a dark psychic stain, making it a hotspot for paranormal activity. Visitors report full-bodied apparitions, disembodied screams, and objects being thrown by unseen forces.' },
+        { title: 'Social History', content: 'Opened in 1908, Pennhurst became a symbol of the mistreatment of the mentally and physically disabled in the 20th century. A 1968 television exposé revealed the horrific conditions, eventually leading to its closure in 1987.' }
+      ],
+      media: [
+        { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Pennhurst_State_School_and_Hospital_-_Devon_Hall.jpg/600px-Pennhurst_State_School_and_Hospital_-_Devon_Hall.jpg', caption: 'The decaying Devon Hall on the Pennhurst campus.' }
+      ],
+      tags: ['Asylum', 'Medical History', 'Urban Exploration']
+    },
+    46: {
+      id: 46, name: 'Hotel Bethlehem', address: '437 Main St, Bethlehem, PA 18018', coordinates: [40.6226, -75.3800], category: LocationCategory.HAUNTED,
+      dossier: [
+        { title: 'Spirit Stories', content: 'This historic hotel is known for its friendly resident ghosts. Reports include sightings of May Yohe, a 19th-century actress who lived at the hotel; a jovial former landlord who greets guests; and a young girl who appears in the lobby. Room 932 is said to be a particular hotspot.' },
+        { title: 'Social History', content: 'The hotel stands on the site of the first house in Bethlehem, built in 1741. The current structure was built in 1922 and has a long history of hosting dignitaries, presidents, and celebrities.' }
+      ],
+      media: [
+        { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Hotel_Bethlehem_PA.jpg/600px-Hotel_Bethlehem_PA.jpg', caption: 'The grand exterior of the Historic Hotel Bethlehem.' }
+      ],
+      tags: ['Historic Hotel', 'Bethlehem', 'Colonial']
+    },
+    47: {
+      id: 47, name: 'Farnsworth House Inn', address: '401 Baltimore St, Gettysburg, PA 17325', coordinates: [39.8286, -77.2300], category: LocationCategory.HAUNTED,
+      dossier: [
+        { title: 'Spirit Stories', content: 'This inn is considered one of Gettysburg\'s most haunted locations. Its attic was used by Confederate sharpshooters, one of whom was accidentally killed by friendly fire. The spirits of soldiers are frequently seen and heard throughout the house, and the scent of cigar smoke often lingers in empty rooms.' },
+        { title: 'Social History', content: 'The house sheltered Confederate soldiers during the Battle of Gettysburg and bears the scars of the conflict, with over 100 bullet holes still visible on its walls. It now operates as a period inn and restaurant.' }
+      ],
+      media: [
+        { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Farnsworth_House_Inn.jpg/600px-Farnsworth_House_Inn.jpg', caption: 'The historic Farnsworth House Inn, scarred by the Battle of Gettysburg.' }
+      ],
+      tags: ['Civil War', 'Gettysburg', 'Inn']
+    },
+    48: {
+      id: 48, name: 'Mütter Museum', address: '19 S 22nd St, Philadelphia, PA 19103', coordinates: [39.9535, -75.1747], category: LocationCategory.HAUNTED,
+      dossier: [
+        { title: 'Spirit Stories', content: 'As a museum filled with anatomical specimens and human remains, it\'s no surprise that paranormal activity is reported. Visitors feel watched, see shadowy figures moving among the displays, and hear disembodied whispers. The famous "Soap Lady" exhibit is a particular focus of strange feelings and apparitions.' },
+        { title: 'Social History', content: 'The Mütter Museum is a medical museum that helps the public understand the mysteries and beauty of the human body while appreciating the history of diagnosis and treatment of disease. Its collection includes over 25,000 objects.' }
+      ],
+      media: [
+        { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Mutter_Museum_2.jpg/600px-Mutter_Museum_2.jpg', caption: 'The Hyrtl Skull Collection on display at the Mütter Museum.' }
+      ],
+      tags: ['Medical History', 'Museum', 'Philadelphia']
+    },
+    49: {
+      id: 49, name: 'Jean Bonnet Tavern', address: '6048 Lincoln Hwy, Bedford, PA 15522', coordinates: [40.0192, -78.5832], category: LocationCategory.HAUNTED,
+      dossier: [
+        { title: 'Spirit Stories', content: 'This 18th-century tavern is said to be home to several spirits. One is a friendly ghost who likes to play pranks on staff and guests, such as hiding keys or moving objects. A more somber spirit of a soldier from the Whiskey Rebellion era is also occasionally seen staring out a second-floor window.' },
+        { title: 'Social History', content: 'Built in the 1760s, the Jean Bonnet Tavern was a key stop on the Forbes Road, a major colonial route. It played a role in the Whiskey Rebellion and has been in continuous operation for centuries, serving travelers and locals alike.' }
+      ],
+      media: [
+        { type: 'image', url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Jean_Bonnet_Tavern.jpg/600px-Jean_Bonnet_Tavern.jpg', caption: 'The historic Jean Bonnet Tavern in Bedford, Pennsylvania.' }
+      ],
+      tags: ['18th Century', 'Tavern', 'Whiskey Rebellion']
+    },
   },
 };
 

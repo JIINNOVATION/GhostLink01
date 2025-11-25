@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import type { LatLngExpression } from 'leaflet';
 import Header from './components/layout/Header';
@@ -47,15 +48,50 @@ const App: React.FC = () => {
     ...Object.values(MOCK_ALIEN_DATA.details)
   ];
 
+  // Effect to handle initial state from URL and subsequent hash changes
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1); // remove #
+      const parts = hash.split('/').filter(Boolean); // e.g., ['alien', '104']
+      
+      const newTheme = (parts[0] === 'ghost' || parts[0] === 'alien') ? parts[0] : 'ghost';
+      const newLocationId = parts[1] ? parseInt(parts[1], 10) : null;
+
+      setTheme(newTheme);
+      setSelectedLocationId(newLocationId);
+    };
+    
+    // Listen for hash changes (back/forward buttons)
+    window.addEventListener('hashchange', handleHashChange);
+    
+    // Set initial state from URL
+    handleHashChange();
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
+
+  // Effect to update URL when state changes from user interaction
+  useEffect(() => {
+    const newHash = `/${theme}${selectedLocationId ? `/${selectedLocationId}` : ''}`;
+    // Only update if the hash is different, to avoid loops with the hashchange listener
+    if (window.location.hash.slice(1) !== newHash.slice(1)) {
+      window.location.hash = newHash;
+    }
+  }, [theme, selectedLocationId]);
+  
+  // Effect to update body class for theming
   useEffect(() => {
     document.body.className = `theme-${theme} bg-black text-gray-200`;
   }, [theme]);
   
+  // Effect to fetch pins when theme changes
   useEffect(() => {
     locationService.fetchLocationPins(theme).then(setPins);
-    setSelectedLocationId(null); // Close dossier on theme change
   }, [theme]);
 
+  // Effect to filter pins based on pins or filters changing
   useEffect(() => {
     const activeCategories = Object.entries(filters)
       .filter(([, isActive]) => isActive)
@@ -63,6 +99,7 @@ const App: React.FC = () => {
     setFilteredPins(pins.filter(pin => activeCategories.includes(pin.category)));
   }, [pins, filters]);
 
+  // Effect to center map on user's location when found
   useEffect(() => {
     if (userPosition) {
       setMapCenter(userPosition);
@@ -91,7 +128,13 @@ const App: React.FC = () => {
   };
   
   const handleThemeToggle = () => {
-    setTheme(currentTheme => currentTheme === 'ghost' ? 'alien' : 'ghost');
+    // This now changes the state, which triggers the useEffect to update the hash
+    setTheme(currentTheme => {
+      const newTheme = currentTheme === 'ghost' ? 'alien' : 'ghost';
+      // Close dossier when switching themes via the button
+      setSelectedLocationId(null); 
+      return newTheme;
+    });
   }
 
   return (
