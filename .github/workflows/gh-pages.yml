@@ -41,7 +41,7 @@ on:
 
 concurrency:
   group: gh-pages-deploy
-  cancel-in-progress: true
+  cancel-in-progress:true
 
 jobs:
   build-and-deploy:
