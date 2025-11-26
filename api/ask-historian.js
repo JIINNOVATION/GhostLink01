@@ -1,10 +1,15 @@
 import { GoogleGenAI } from '@google/genai';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   try {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.error('GEMINI_API_KEY environment variable is not set');
+      return res.status(500).json({ error: 'API key not configured' });
+    }
+
+    const ai = new GoogleGenAI({ apiKey });
     const { question, context: dossierContext, locationName } = req.body || {};
     if (!question || !dossierContext || !locationName) return res.status(400).json({ error: 'Missing fields' });
 
@@ -29,6 +34,6 @@ export default async function handler(req, res) {
     return res.json({ text, citations });
   } catch (err) {
     console.error('ask-historian error:', err);
-    return res.status(500).json({ error: 'Historian query failed' });
+    return res.status(500).json({ error: 'Historian query failed', details: err.message });
   }
 }
