@@ -1,8 +1,12 @@
 import type { Citation, AIResponse } from '../types';
 
-// Serverless function endpoints. Vercel/Netlify both use `/api/<name>`.
-const GENERATE_IMAGE_URL = '/api/generate-image';
-const ASK_HISTORIAN_URL = '/api/ask-historian';
+// Remote API base URL (for Render or other hosted backend).
+// If `REACT_APP_REMOTE_API_URL` is set at build time, use it as the base
+// (e.g. https://ghostlink-api.onrender.com). Otherwise fall back to
+// relative serverless endpoints (`/api/*`) for Vercel/Netlify deployments.
+const REMOTE_API_BASE = (process.env.REACT_APP_REMOTE_API_URL || '').replace(/\/$/, '');
+const GENERATE_IMAGE_URL = REMOTE_API_BASE ? `${REMOTE_API_BASE}/api/generate-image` : '/api/generate-image';
+const ASK_HISTORIAN_URL = REMOTE_API_BASE ? `${REMOTE_API_BASE}/api/ask-historian` : '/api/ask-historian';
 
 // Helper function to call serverless endpoints
 const callServerFunction = async (endpoint: string, payload: any) => {
