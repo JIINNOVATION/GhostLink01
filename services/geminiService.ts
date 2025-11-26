@@ -1,11 +1,11 @@
 import type { Citation, AIResponse } from '../types';
 
-// Netlify Functions URLs (relative paths work on same domain)
-const GENERATE_IMAGE_URL = '/.netlify/functions/generate-image';
-const ASK_HISTORIAN_URL = '/.netlify/functions/ask-historian';
+// Serverless function endpoints. Vercel/Netlify both use `/api/<name>`.
+const GENERATE_IMAGE_URL = '/api/generate-image';
+const ASK_HISTORIAN_URL = '/api/ask-historian';
 
-// Helper function to call Netlify Functions
-const callNetlifyFunction = async (endpoint: string, payload: any) => {
+// Helper function to call serverless endpoints
+const callServerFunction = async (endpoint: string, payload: any) => {
   try {
     const res = await fetch(endpoint, {
       method: 'POST',
@@ -13,18 +13,19 @@ const callNetlifyFunction = async (endpoint: string, payload: any) => {
       body: JSON.stringify(payload),
     });
     if (!res.ok) {
-      throw new Error(`API error: ${res.status}`);
+      const text = await res.text().catch(() => '');
+      throw new Error(`API error: ${res.status} ${text}`);
     }
     return res.json();
   } catch (error) {
-    console.error(`Netlify Function call failed to ${endpoint}:`, error);
+    console.error(`Server function call failed to ${endpoint}:`, error);
     throw error;
   }
 };
 
 export const askHistorian = async (question: string, context: string, locationName: string): Promise<AIResponse> => {
   try {
-    const result = await callNetlifyFunction(ASK_HISTORIAN_URL, {
+    const result = await callServerFunction(ASK_HISTORIAN_URL, {
       question,
       context,
       locationName,
@@ -44,7 +45,7 @@ export const askHistorian = async (question: string, context: string, locationNa
 
 export const generateLocationImage = async (prompt: string): Promise<string> => {
   try {
-    const result = await callNetlifyFunction(GENERATE_IMAGE_URL, { prompt });
+    const result = await callServerFunction(GENERATE_IMAGE_URL, { prompt });
     if (!result.image) throw new Error('No image returned');
     return result.image;
   } catch (error) {
@@ -62,7 +63,7 @@ export const generateSpeech = async (text: string): Promise<string | null> => {
 
 export const askTheLink = async (question: string, allLocationsContext: string): Promise<AIResponse> => {
   try {
-    const result = await callNetlifyFunction(ASK_HISTORIAN_URL, {
+    const result = await callServerFunction(ASK_HISTORIAN_URL, {
       question,
       context: allLocationsContext,
       locationName: 'The Link - Global Database',
