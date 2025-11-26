@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/ask-historian.js": {
+      "memory": 1024,
+      "maxDuration": 60
+    },
+    "api/generate-image.js": {
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  },
+  "buildCommand": "npm run build"
+}
