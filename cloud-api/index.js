@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import { GoogleGenAI, Modality } from '@google/genai';
 
 const PORT = process.env.PORT || 8080;
+const GITHUB_PAGES_URL = process.env.GITHUB_PAGES_URL || 'https://jiinnovation.github.io';
 
 // Initialize Google GenAI client. If you provide GEMINI_API_KEY it will use it,
 // otherwise in GCP the client can pick up Application Default Credentials.
@@ -12,16 +13,43 @@ const ai = process.env.GEMINI_API_KEY
   : new GoogleGenAI();
 
 const app = express();
-app.use(cors());
+
+// Configure CORS to allow GitHub Pages origin
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Allow requests from GitHub Pages and localhost (for testing)
+    const allowedOrigins = [GITHUB_PAGES_URL, 'http://localhost:3000', 'http://localhost:5173'];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(bodyParser.json({ limit: '5mb' }));
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
+
+app.get('/api/debug', (req, res) => {
+  res.json({
+    status: 'ok',
+    hasGeminiKey: !!process.env.GEMINI_API_KEY,
+    githubPagesUrl: GITHUB_PAGES_URL,
+    nodeEnv: process.env.NODE_ENV || 'development',
+  });
+});
 
 app.post('/api/generate-image', async (req, res) => {
   const { prompt } = req.body || {};
   if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
 
   try {
+    if (!process.env.GEMINI_API_KEY) {
+      return res.status(500).json({ error: 'GEMINI_API_KEY not configured on server' });
+    }
+
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash-image',
       contents: { parts: [{ text: prompt }] },
@@ -74,4 +102,8 @@ app.post('/api/ask-historian', async (req, res) => {
 // Basic index route
 app.get('/', (req, res) => res.send('GhostLink Cloud API: OK'));
 
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`GhostLink API Server listening on port ${PORT}`);
+  console.log(`CORS allowed origin: ${GITHUB_PAGES_URL}`);
+  console.log(`Gemini API Key configured: ${!!process.env.GEMINI_API_KEY}`);
+});

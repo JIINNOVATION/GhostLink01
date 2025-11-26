@@ -1,0 +1,24 @@
+# Render deployment configuration
+# Save as render.yaml or configure manually in Render dashboard
+
+services:
+  - type: web
+    name: ghostlink-api
+    env: docker
+    repo: https://github.com/JIINNOVATION/GhostLink01
+    branch: main
+    rootDir: cloud-api
+    buildCommand: npm ci --omit=dev
+    startCommand: node index.js
+    plan: free
+    
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: NODE_ENV
+        value: production
+      - key: GITHUB_PAGES_URL
+        value: https://jiinnovation.github.io/GhostLink01
+      # GEMINI_API_KEY must be set in Render dashboard (keep it secret, not in this file)
+      - key: GEMINI_API_KEY
+        sync: false  # Don't sync from repo; set manually in dashboard
