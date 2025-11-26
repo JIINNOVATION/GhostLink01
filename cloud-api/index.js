@@ -6,11 +6,8 @@ import { GoogleGenAI, Modality } from '@google/genai';
 const PORT = process.env.PORT || 8080;
 const GITHUB_PAGES_URL = process.env.GITHUB_PAGES_URL || 'https://jiinnovation.github.io';
 
-// Initialize Google GenAI client. If you provide GEMINI_API_KEY it will use it,
-// otherwise in GCP the client can pick up Application Default Credentials.
-const ai = process.env.GEMINI_API_KEY
-  ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
-  : new GoogleGenAI();
+// Initialize Google GenAI client with API key from environment
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
 const app = express();
 
